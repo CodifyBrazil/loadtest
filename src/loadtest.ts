@@ -1,13 +1,28 @@
 // loadtest_scenario.ts
 import { performance } from "node:perf_hooks";
-import { writeFileSync } from "node:fs";
+import { writeFileSync, readFileSync, existsSync } from "node:fs";
+import { resolve } from "node:path";
+
+interface ConfigFile {
+  createUrl: string;
+  messageUrl: string;
+  headers?: Record<string, string>;
+  createBody?: string;
+  messageBodyTemplate?: string;
+  messagesPerConversation?: number;
+  concurrency?: number;
+  durationSec?: number;
+  totalConversations?: number;
+  timeoutMs?: number;
+  output?: string;
+}
 
 type Config = {
   createUrl: string;
   messageUrl: string;
   headers: Record<string, string>;
-  createBody: string; // corpo JSON para criar conversa
-  messageBodyTemplate: string; // corpo JSON com placeholder {{conversationId}}
+  createBody: string;
+  messageBodyTemplate: string;
   messagesPerConversation: number;
   concurrency: number;
   durationSec?: number;
@@ -26,8 +41,80 @@ type Stat = {
   error?: string | undefined;
 };
 
-function now() {
+function now(): number {
   return performance.now();
+}
+
+function loadConfigFile(filePath: string): ConfigFile {
+  const fullPath = resolve(filePath);
+  
+  if (!existsSync(fullPath)) {
+    throw new Error(`Arquivo de configuração não encontrado: ${fullPath}`);
+  }
+
+  try {
+    const content = readFileSync(fullPath, "utf-8");
+    const config = JSON.parse(content) as ConfigFile;
+    return config;
+  } catch (error) {
+    if (error instanceof SyntaxError) {
+      throw new Error(`Erro ao fazer parse do JSON: ${error.message}`);
+    }
+    throw new Error(`Erro ao ler arquivo de configuração: ${error}`);
+  }
+}
+
+function validateConfigFile(config: ConfigFile): void {
+  if (!config.createUrl || typeof config.createUrl !== "string") {
+    throw new Error("createUrl é obrigatório e deve ser uma string");
+  }
+  
+  if (!config.messageUrl || typeof config.messageUrl !== "string") {
+    throw new Error("messageUrl é obrigatório e deve ser uma string");
+  }
+
+  if (config.durationSec && config.totalConversations) {
+    throw new Error("Não é possível usar durationSec e totalConversations simultaneamente");
+  }
+
+  if (config.durationSec && (typeof config.durationSec !== "number" || config.durationSec <= 0)) {
+    throw new Error("durationSec deve ser um número positivo");
+  }
+
+  if (config.totalConversations && (typeof config.totalConversations !== "number" || config.totalConversations <= 0)) {
+    throw new Error("totalConversations deve ser um número positivo");
+  }
+}
+
+function mergeConfigs(fileConfig: ConfigFile, cliArgs: Record<string, string>): Config {
+  const config: Config = {
+    createUrl: fileConfig.createUrl,
+    messageUrl: fileConfig.messageUrl,
+    headers: fileConfig.headers || {},
+    createBody: fileConfig.createBody || '{"title":"nova conversa"}',
+    messageBodyTemplate: fileConfig.messageBodyTemplate || '{"conversationId":"{{conversationId}}","content":"Olá!"}',
+    messagesPerConversation: fileConfig.messagesPerConversation || 3,
+    concurrency: fileConfig.concurrency || 10,
+    durationSec: fileConfig.durationSec,
+    totalConversations: fileConfig.totalConversations,
+    timeoutMs: fileConfig.timeoutMs || 10000,
+    output: fileConfig.output,
+  };
+
+  // CLI args têm prioridade sobre arquivo de configuração
+  if (cliArgs.createUrl) config.createUrl = cliArgs.createUrl;
+  if (cliArgs.messageUrl) config.messageUrl = cliArgs.messageUrl;
+  if (cliArgs.headers) config.headers = JSON.parse(cliArgs.headers);
+  if (cliArgs.createBody) config.createBody = cliArgs.createBody;
+  if (cliArgs.messageBodyTemplate) config.messageBodyTemplate = cliArgs.messageBodyTemplate;
+  if (cliArgs.messagesPerConversation) config.messagesPerConversation = Number(cliArgs.messagesPerConversation);
+  if (cliArgs.concurrency) config.concurrency = Number(cliArgs.concurrency);
+  if (cliArgs.duration) config.durationSec = Number(cliArgs.duration);
+  if (cliArgs.totalConversations) config.totalConversations = Number(cliArgs.totalConversations);
+  if (cliArgs.timeout) config.timeoutMs = Number(cliArgs.timeout);
+  if (cliArgs.output) config.output = cliArgs.output;
+
+  return config;
 }
 
 function percentile(sorted: number[], p: number): number {
@@ -212,10 +299,11 @@ async function main(cfg: Config) {
   }
 }
 
-// --- CLI simples ---
+// --- CLI com suporte a arquivo de configuração ---
 function parseArgs(): Config {
   const argv = process.argv.slice(2);
   const args: Record<string, string> = {};
+  
   for (let i = 0; i < argv.length; i++) {
     if (argv[i]?.startsWith("--")) {
       const key = argv[i]!.slice(2);
@@ -229,8 +317,31 @@ function parseArgs(): Config {
     }
   }
 
+  // Se --config foi fornecido, carregar arquivo de configuração
+  if (args.config) {
+    try {
+      const fileConfig = loadConfigFile(args.config);
+      validateConfigFile(fileConfig);
+      const config = mergeConfigs(fileConfig, args);
+      
+      // Validação final
+      if (!config.createUrl || !config.messageUrl) {
+        throw new Error("createUrl e messageUrl são obrigatórios");
+      }
+      
+      return config;
+    } catch (error) {
+      console.error(`Erro na configuração: ${error}`);
+      process.exit(1);
+    }
+  }
+
+  // Modo tradicional (apenas argumentos CLI)
   if (!args.createUrl || !args.messageUrl) {
-    console.error("Use --createUrl e --messageUrl obrigatoriamente.");
+    console.error("Use --createUrl e --messageUrl obrigatoriamente, ou --config <arquivo.json>");
+    console.error("\nExemplos:");
+    console.error("  npm start -- --createUrl '...' --messageUrl '...'");
+    console.error("  npm start -- --config config.json");
     process.exit(1);
   }
 

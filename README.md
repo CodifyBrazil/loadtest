@@ -24,9 +24,20 @@ npm run build
 
 ## Uso
 
+### Modo 1: Arquivo de Configuração (Recomendado)
+```bash
+npm start -- --config <arquivo.json>
+```
+
+### Modo 2: Argumentos CLI
+```bash
+npm start -- --createUrl "..." --messageUrl "..."
+```
+
 ### Parâmetros Obrigatórios
 - `--createUrl`: URL para criar conversas
 - `--messageUrl`: URL para enviar mensagens
+- **OU** `--config`: Arquivo de configuração JSON
 
 ### Parâmetros Opcionais
 - `--headers`: Headers HTTP em JSON (padrão: `{}`)
@@ -41,27 +52,47 @@ npm run build
 
 ### Exemplos
 
-#### Teste por duração (30 segundos)
+#### Usando arquivo de configuração (Recomendado)
 ```bash
+# Configuração básica
+npm start -- --config config-examples/basic.json
+
+# Configuração avançada
+npm start -- --config config-examples/advanced.json
+
+# Teste de stress
+npm start -- --config config-examples/stress-test.json
+```
+
+#### Sobrescrever configuração com argumentos CLI
+```bash
+# Usar config.json mas alterar concurrency
+npm start -- --config config-examples/basic.json --concurrency 25
+
+# Usar config.json mas alterar URLs
+npm start -- --config config-examples/basic.json \
+  --createUrl "https://nova-api.com/conversations" \
+  --messageUrl "https://nova-api.com/messages"
+```
+
+#### Modo tradicional (argumentos CLI)
+```bash
+# Teste por duração (30 segundos)
 npm start -- \
   --createUrl "https://api.exemplo.com/conversations" \
   --messageUrl "https://api.exemplo.com/messages" \
   --duration 30 \
   --concurrency 5
-```
 
-#### Teste por número de conversas
-```bash
+# Teste por número de conversas
 npm start -- \
   --createUrl "https://api.exemplo.com/conversations" \
   --messageUrl "https://api.exemplo.com/messages" \
   --totalConversations 100 \
   --concurrency 10 \
   --messagesPerConversation 5
-```
 
-#### Com headers personalizados
-```bash
+# Com headers personalizados
 npm start -- \
   --createUrl "https://api.exemplo.com/conversations" \
   --messageUrl "https://api.exemplo.com/messages" \
@@ -70,17 +101,48 @@ npm start -- \
   --output "relatorio.json"
 ```
 
+## Arquivos de Configuração
+
+### Estrutura JSON
+```json
+{
+  "createUrl": "string (obrigatório)",
+  "messageUrl": "string (obrigatório)",
+  "headers": "object (opcional)",
+  "createBody": "string (opcional)",
+  "messageBodyTemplate": "string (opcional)",
+  "concurrency": "number (opcional, padrão: 10)",
+  "durationSec": "number (opcional, exclusivo com totalConversations)",
+  "totalConversations": "number (opcional, exclusivo com durationSec)",
+  "messagesPerConversation": "number (opcional, padrão: 3)",
+  "timeoutMs": "number (opcional, padrão: 10000)",
+  "output": "string (opcional)"
+}
+```
+
+### Exemplos Prontos
+- `config-examples/basic.json` - Configuração básica
+- `config-examples/advanced.json` - Configuração avançada com headers
+- `config-examples/stress-test.json` - Teste de stress
+
+### Validação Automática
+- URLs obrigatórias
+- Tipos de dados corretos
+- Exclusividade entre `durationSec` e `totalConversations`
+- Valores positivos para números
+- Sintaxe JSON válida
+
 ## Desenvolvimento
 
 ```bash
 # Executar em modo desenvolvimento
-npm run dev -- --createUrl "..." --messageUrl "..."
+npm run dev -- --config config-examples/basic.json
 
 # Compilar
 npm run build
 
 # Executar versão compilada
-npm start -- --createUrl "..." --messageUrl "..."
+npm start -- --config config-examples/basic.json
 ```
 
 ## Arquitetura

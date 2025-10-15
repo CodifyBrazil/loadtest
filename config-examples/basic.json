@@ -1,0 +1,8 @@
+{
+  "createUrl": "https://api.exemplo.com/conversations",
+  "messageUrl": "https://api.exemplo.com/messages",
+  "concurrency": 5,
+  "durationSec": 30,
+  "messagesPerConversation": 3,
+  "timeoutMs": 10000
+}

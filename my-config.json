@@ -1,0 +1,15 @@
+{
+  "createUrl": "https://httpbin.org/post",
+  "messageUrl": "https://httpbin.org/post",
+  "headers": {
+    "Content-Type": "application/json",
+    "User-Agent": "LoadTest/1.0"
+  },
+  "createBody": "{\"title\":\"Teste de Carga\",\"description\":\"Conversa gerada pelo loadtest\"}",
+  "messageBodyTemplate": "{\"conversationId\":\"{{conversationId}}\",\"content\":\"Mensagem de teste\",\"timestamp\":\"{{timestamp}}\"}",
+  "concurrency": 3,
+  "durationSec": 10,
+  "messagesPerConversation": 2,
+  "timeoutMs": 5000,
+  "output": "meu-teste.json"
+}

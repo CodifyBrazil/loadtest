@@ -1,0 +1,16 @@
+{
+  "createUrl": "https://api.exemplo.com/conversations",
+  "messageUrl": "https://api.exemplo.com/messages",
+  "headers": {
+    "Authorization": "Bearer token123",
+    "Content-Type": "application/json",
+    "X-API-Version": "v1"
+  },
+  "createBody": "{\"title\":\"Teste de Carga\",\"description\":\"Conversa gerada automaticamente\"}",
+  "messageBodyTemplate": "{\"conversationId\":\"{{conversationId}}\",\"content\":\"Mensagem de teste #{{messageNumber}}\",\"timestamp\":\"{{timestamp}}\"}",
+  "concurrency": 20,
+  "totalConversations": 1000,
+  "messagesPerConversation": 5,
+  "timeoutMs": 15000,
+  "output": "relatorio-avancado.json"
+}

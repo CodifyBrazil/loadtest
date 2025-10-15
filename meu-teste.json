@@ -1,0 +1,129 @@
+{
+  "cfg": {
+    "createUrl": "https://httpbin.org/post",
+    "messageUrl": "https://httpbin.org/post",
+    "headers": {
+      "Content-Type": "application/json",
+      "User-Agent": "LoadTest/1.0"
+    },
+    "createBody": "{\"title\":\"Teste de Carga\",\"description\":\"Conversa gerada pelo loadtest\"}",
+    "messageBodyTemplate": "{\"conversationId\":\"{{conversationId}}\",\"content\":\"Mensagem de teste\",\"timestamp\":\"{{timestamp}}\"}",
+    "messagesPerConversation": 2,
+    "concurrency": 3,
+    "durationSec": 10,
+    "timeoutMs": 5000,
+    "output": "meu-teste.json"
+  },
+  "aggCreate": {
+    "total": 10,
+    "ok": 4,
+    "fail": 6,
+    "p50": 5002.156086499999,
+    "p90": 5008.051380499999,
+    "p99": 5009.190058249999,
+    "avg": 3579.296342299999,
+    "min": 651.7576490000001,
+    "max": 5009.316578,
+    "codes": {
+      "200": 4
+    },
+    "errors": {
+      "timeout": 6
+    }
+  },
+  "aggMsg": {
+    "total": 0,
+    "ok": 0,
+    "fail": 0,
+    "p50": 0,
+    "p90": 0,
+    "p99": 0,
+    "avg": 0,
+    "min": 0,
+    "max": 0,
+    "codes": {},
+    "errors": {}
+  },
+  "stats": [
+    {
+      "type": "create",
+      "start": 0,
+      "end": 0,
+      "latency": 2594.812371,
+      "ok": true,
+      "status": 200
+    },
+    {
+      "type": "create",
+      "start": 0,
+      "end": 0,
+      "latency": 1473.0053110000003,
+      "ok": true,
+      "status": 200
+    },
+    {
+      "type": "create",
+      "start": 0,
+      "end": 0,
+      "latency": 5007.910803,
+      "ok": false,
+      "error": "timeout"
+    },
+    {
+      "type": "create",
+      "start": 0,
+      "end": 0,
+      "latency": 5009.316578,
+      "ok": false,
+      "error": "timeout"
+    },
+    {
+      "type": "create",
+      "start": 0,
+      "end": 0,
+      "latency": 651.7576490000001,
+      "ok": true,
+      "status": 200
+    },
+    {
+      "type": "create",
+      "start": 0,
+      "end": 0,
+      "latency": 1045.3253539999996,
+      "ok": true,
+      "status": 200
+    },
+    {
+      "type": "create",
+      "start": 0,
+      "end": 0,
+      "latency": 5002.403026,
+      "ok": false,
+      "error": "timeout"
+    },
+    {
+      "type": "create",
+      "start": 0,
+      "end": 0,
+      "latency": 5001.909146999999,
+      "ok": false,
+      "error": "timeout"
+    },
+    {
+      "type": "create",
+      "start": 0,
+      "end": 0,
+      "latency": 5003.52957,
+      "ok": false,
+      "error": "timeout"
+    },
+    {
+      "type": "create",
+      "start": 0,
+      "end": 0,
+      "latency": 5002.993614000001,
+      "ok": false,
+      "error": "timeout"
+    }
+  ]
+}

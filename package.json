@@ -1,0 +1,21 @@
+{
+  "name": "loadtest",
+  "version": "1.0.0",
+  "description": "Load testing tool for conversation APIs",
+  "main": "dist/loadtest.js",
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/loadtest.js",
+    "dev": "ts-node --esm src/loadtest.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": ["loadtest", "performance", "api", "testing"],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^24.7.2",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3"
+  }
+}

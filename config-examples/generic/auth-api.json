@@ -1,0 +1,13 @@
+{
+  "url": "https://httpbin.org/bearer",
+  "method": "GET",
+  "headers": {
+    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+    "Content-Type": "application/json",
+    "User-Agent": "AuthTest/1.0"
+  },
+  "concurrency": 25,
+  "totalRequests": 500,
+  "timeoutMs": 5000,
+  "output": "results/auth-api-results.json"
+}

@@ -1,0 +1,39 @@
+{
+  "config": {
+    "url": "https://integracaov2.serverlondrisoft.com/webhook/teste",
+    "method": "POST",
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "title": "Teste de Carga",
+      "description": "Conversa gerada automaticamente",
+      "content": "Mensagem de teste",
+      "timestamp": "2024-01-15T12:00:00Z"
+    },
+    "concurrency": 30,
+    "totalRequests": 1000,
+    "timeoutMs": 15000,
+    "output": "results/integracao-results.json"
+  },
+  "result": {
+    "totalRequests": 1029,
+    "successfulRequests": 81,
+    "failedRequests": 948,
+    "averageLatency": 14748.253293814374,
+    "p50Latency": 15001.17268399999,
+    "p90Latency": 15001.963060200016,
+    "p99Latency": 15002.773110119999,
+    "minLatency": 2010.8238989999998,
+    "maxLatency": 15014.514146000001,
+    "requestsPerSecond": 2.0076116048447625,
+    "statusCodes": {
+      "200": 81
+    },
+    "errors": {
+      "timeout": 948
+    },
+    "totalDuration": 512.549399635
+  },
+  "timestamp": "2025-10-15T15:26:14.722Z"
+}

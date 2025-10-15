@@ -1,15 +1,11 @@
 {
-  "createUrl": "https://api.exemplo.com/conversations",
-  "messageUrl": "https://api.exemplo.com/messages",
+  "url": "https://httpbin.org/delay/1",
+  "method": "GET",
   "headers": {
-    "Authorization": "Bearer stress-test-token",
-    "Content-Type": "application/json"
+    "User-Agent": "StressTest/1.0"
   },
-  "createBody": "{\"title\":\"Stress Test\",\"priority\":\"high\"}",
-  "messageBodyTemplate": "{\"conversationId\":\"{{conversationId}}\",\"content\":\"Mensagem de stress test\",\"metadata\":{\"test\":\"load\",\"timestamp\":\"{{timestamp}}\"}}",
   "concurrency": 50,
-  "durationSec": 300,
-  "messagesPerConversation": 10,
-  "timeoutMs": 5000,
-  "output": "stress-test-results.json"
+  "durationSec": 120,
+  "timeoutMs": 15000,
+  "output": "results/stress-test-results.json"
 }

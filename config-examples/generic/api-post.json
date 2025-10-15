@@ -1,0 +1,17 @@
+{
+  "url": "https://jsonplaceholder.typicode.com/posts",
+  "method": "POST",
+  "headers": {
+    "Content-Type": "application/json",
+    "User-Agent": "LoadTest/1.0"
+  },
+  "body": {
+    "title": "Test Post",
+    "body": "This is a test post for load testing",
+    "userId": 1
+  },
+  "concurrency": 15,
+  "totalRequests": 1000,
+  "timeoutMs": 8000,
+  "output": "results/api-post-results.json"
+}

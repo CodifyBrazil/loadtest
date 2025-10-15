@@ -1,0 +1,17 @@
+{
+  "url": "https://integracaov2.serverlondrisoft.com/webhook/teste",
+  "method": "POST",
+  "headers": {
+    "Content-Type": "application/json"
+  },
+  "body": {
+    "title": "Teste de Carga",
+    "description": "Conversa gerada automaticamente",
+    "content": "Mensagem de teste",
+    "timestamp": "2024-01-15T12:00:00Z"
+  },
+  "concurrency": 30,
+  "totalRequests": 1000,
+  "timeoutMs": 15000,
+  "output": "results/integracao-results.json"
+}

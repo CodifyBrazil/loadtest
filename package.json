@@ -8,6 +8,8 @@
     "build": "tsc",
     "start": "node dist/loadtest.js",
     "dev": "ts-node --esm src/loadtest.ts",
+    "generic": "node dist/generic-loadtest.js",
+    "generic:build": "tsc && node dist/generic-loadtest.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": ["loadtest", "performance", "api", "testing"],

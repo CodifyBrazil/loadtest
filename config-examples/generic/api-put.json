@@ -1,0 +1,19 @@
+{
+  "url": "https://jsonplaceholder.typicode.com/posts/1",
+  "method": "PUT",
+  "headers": {
+    "Content-Type": "application/json",
+    "User-Agent": "LoadTest/1.0",
+    "Authorization": "Bearer your-token-here"
+  },
+  "body": {
+    "id": 1,
+    "title": "Updated Post",
+    "body": "This post has been updated via load test",
+    "userId": 1
+  },
+  "concurrency": 10,
+  "durationSec": 60,
+  "timeoutMs": 10000,
+  "output": "results/api-put-results.json"
+}

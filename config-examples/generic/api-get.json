@@ -1,0 +1,12 @@
+{
+  "url": "https://jsonplaceholder.typicode.com/posts",
+  "method": "GET",
+  "headers": {
+    "User-Agent": "LoadTest/1.0",
+    "Accept": "application/json"
+  },
+  "concurrency": 20,
+  "durationSec": 30,
+  "timeoutMs": 5000,
+  "output": "results/api-get-results.json"
+}

@@ -1,0 +1,13 @@
+{
+  "url": "https://httpbin.org/post",
+  "method": "POST",
+  "headers": {
+    "Content-Type": "application/x-www-form-urlencoded",
+    "User-Agent": "FormTest/1.0"
+  },
+  "body": "name=TestUser&email=test@example.com&message=Load test form submission",
+  "concurrency": 20,
+  "durationSec": 45,
+  "timeoutMs": 7000,
+  "output": "results/form-data-results.json"
+}
